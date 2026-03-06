@@ -270,9 +270,6 @@ function showSection(sectionName) {
 
 // Load dashboard data
 function loadDashboard() {
-    // Load progress summary first
-    loadProgressSummary();
-    
     // Load jobs for recent section
     loadJobs(true);
     
@@ -817,10 +814,6 @@ function saveProfile(event) {
     .then(response => response.json())
     .then(data => {
         alert('Profile saved successfully!');
-        
-        // Track profile completion progress
-        updateProgress('profile', 'profile_updated');
-        
         loadDashboard();
     })
     .catch(error => {
@@ -848,10 +841,6 @@ function uploadResume(event) {
     .then(response => response.json())
     .then(data => {
         alert('Resume uploaded successfully!');
-        
-        // Track resume upload progress
-        updateProgress('resume', 'resume_uploaded');
-        
         loadDashboard();
     })
     .catch(error => {
@@ -931,10 +920,6 @@ function analyzeWellness(event) {
     .then(response => response.json())
     .then(data => {
         displayWellnessResult(data);
-        
-        // Track wellness check progress
-        updateProgress('wellness', 'wellness_check_completed');
-        
         loadWellnessScore(); // Refresh dashboard
     })
     .catch(error => {
@@ -1129,9 +1114,6 @@ function submitApplication(jobId) {
         
         // Show success message
         alert('Application submitted successfully!');
-        
-        // Track job application progress
-        updateProgress('applications', 'job_application_submitted');
         
         // Refresh applications list
         loadApplications();
@@ -1505,10 +1487,6 @@ function registerForTraining(trainingId) {
     .then(response => response.json())
     .then(data => {
         alert('Registration successful!');
-        
-        // Track training registration progress
-        updateProgress('trainings', 'training_registered');
-        
         loadTrainings();
         loadMyTrainings(); // Refresh my trainings
     })
