@@ -152,6 +152,87 @@
 
             <!-- Dashboard Section -->
             <section id="dashboard-section" class="content-section">
+                <!-- Progress Overview -->
+                <div class="row g-4 mb-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-chart-line me-2"></i>Your Placement Progress
+                                </h5>
+                                <span class="badge bg-primary" id="overallProgress">0%</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress mb-3" style="height: 25px;">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                         id="overallProgressBar" role="progressbar" style="width: 0%">
+                                        <span id="overallProgressText">0% Complete</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Category Progress Bars -->
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small><i class="fas fa-user me-1"></i>Profile Completion</small>
+                                            <small class="text-muted" id="profileProgressText">0%</small>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-info" id="profileProgressBar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small><i class="fas fa-brain me-1"></i>Aptitude Preparation</small>
+                                            <small class="text-muted" id="aptitudeProgressText">0%</small>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-success" id="aptitudeProgressBar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small><i class="fas fa-code me-1"></i>Technical Skills</small>
+                                            <small class="text-muted" id="technicalProgressText">0%</small>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-warning" id="technicalProgressBar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small><i class="fas fa-comments me-1"></i>Interview Preparation</small>
+                                            <small class="text-muted" id="interviewProgressText">0%</small>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-danger" id="interviewProgressBar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small><i class="fas fa-file-alt me-1"></i>Resume Building</small>
+                                            <small class="text-muted" id="resumeProgressText">0%</small>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-primary" id="resumeProgressBar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small><i class="fas fa-briefcase me-1"></i>Job Applications</small>
+                                            <small class="text-muted" id="applicationsProgressText">0%</small>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-secondary" id="applicationsProgressBar" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
                 <div class="row g-4 mb-4">
                     <div class="col-md-3">
                         <div class="stat-card bg-primary">
@@ -215,16 +296,16 @@
                                             <i class="fas fa-brain me-1"></i>Aptitude Preparation
                                         </h6>
                                         <div class="list-group list-group-flush">
-                                            <a href="https://www.indiabix.com/" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.indiabix.com/" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('aptitude', 'indiabix_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>IndiaBix
                                             </a>
-                                            <a href="https://www.freshersworld.com/aptitude-test" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.freshersworld.com/aptitude-test" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('aptitude', 'freshersworld_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>FreshersWorld
                                             </a>
-                                            <a href="https://www.geeksforgeeks.org/aptitude-questions/" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.geeksforgeeks.org/aptitude-questions/" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('aptitude', 'geeksforgeeks_aptitude_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>GeeksforGeeks
                                             </a>
-                                            <a href="https://www.careerride.com/" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.careerride.com/" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('aptitude', 'careerride_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>CareerRide
                                             </a>
                                         </div>
@@ -234,16 +315,16 @@
                                             <i class="fas fa-code me-1"></i>Technical Preparation
                                         </h6>
                                         <div class="list-group list-group-flush">
-                                            <a href="https://www.geeksforgeeks.org/" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.geeksforgeeks.org/" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('technical', 'geeksforgeeks_technical_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>GeeksforGeeks
                                             </a>
-                                            <a href="https://leetcode.com/" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://leetcode.com/" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('technical', 'leetcode_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>LeetCode
                                             </a>
-                                            <a href="https://www.hackerrank.com/" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.hackerrank.com/" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('technical', 'hackerrank_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>HackerRank
                                             </a>
-                                            <a href="https://www.interviewbit.com/" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.interviewbit.com/" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('technical', 'interviewbit_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>InterviewBit
                                             </a>
                                         </div>
@@ -253,16 +334,16 @@
                                             <i class="fas fa-comments me-1"></i>Interview Preparation
                                         </h6>
                                         <div class="list-group list-group-flush">
-                                            <a href="https://www.glassdoor.com/Interview/" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.glassdoor.com/Interview/" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('interview', 'glassdoor_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>Glassdoor
                                             </a>
-                                            <a href="https://www.pramp.com/" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.pramp.com/" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('interview', 'pramp_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>Pramp
                                             </a>
-                                            <a href="https://www.ambitionbox.com/interviews" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.ambitionbox.com/interviews" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('interview', 'ambitionbox_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>AmbitionBox
                                             </a>
-                                            <a href="https://www.codinginterview.com/" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.codinginterview.com/" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('interview', 'codinginterview_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>Coding Interview
                                             </a>
                                         </div>
@@ -272,16 +353,16 @@
                                             <i class="fas fa-file-alt me-1"></i>Resume Building
                                         </h6>
                                         <div class="list-group list-group-flush">
-                                            <a href="https://www.canva.com/resumes/" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.canva.com/resumes/" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('resume', 'canva_resume_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>Canva Resume
                                             </a>
-                                            <a href="https://www.zety.com/resume-builder" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.zety.com/resume-builder" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('resume', 'zety_resume_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>Zety
                                             </a>
-                                            <a href="https://www.naukri.com/resume-creation/" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.naukri.com/resume-creation/" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('resume', 'naukri_resume_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>Naukri Resume
                                             </a>
-                                            <a href="https://www.resume.com/" target="_blank" class="list-group-item list-group-item-action">
+                                            <a href="https://www.resume.com/" target="_blank" class="list-group-item list-group-item-action" onclick="trackProgress('resume', 'resume_com_visited')">
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>Resume.com
                                             </a>
                                         </div>
@@ -384,6 +465,50 @@
                                                 <i class="fas fa-external-link-alt me-2 text-muted"></i>LinkedIn Jobs
                                             </a>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities & Achievements -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-history me-2"></i>Recent Activities
+                                </h5>
+                                <a href="#" onclick="showSection('progress')" class="btn btn-sm btn-outline-primary">View All</a>
+                            </div>
+                            <div class="card-body">
+                                <div id="recentActivities">
+                                    <div class="text-center text-muted">
+                                        <i class="fas fa-spinner fa-spin"></i> Loading activities...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-trophy me-2"></i>Achievements & Milestones
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="achievementsList">
+                                    <div class="text-center text-muted">
+                                        <i class="fas fa-spinner fa-spin"></i> Loading achievements...
+                                    </div>
+                                </div>
+                                <hr>
+                                <h6 class="text-muted mb-3">Next Milestones</h6>
+                                <div id="nextMilestones">
+                                    <div class="text-center text-muted">
+                                        <i class="fas fa-spinner fa-spin"></i> Loading milestones...
                                     </div>
                                 </div>
                             </div>

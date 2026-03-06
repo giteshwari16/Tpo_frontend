@@ -270,6 +270,9 @@ function showSection(sectionName) {
 
 // Load dashboard data
 function loadDashboard() {
+    // Load progress summary first
+    loadProgressSummary();
+    
     // Load jobs for recent section
     loadJobs(true);
     
@@ -281,6 +284,235 @@ function loadDashboard() {
     
     // Load wellness score
     loadWellnessScore();
+}
+
+// Load progress summary
+function loadProgressSummary() {
+    const token = localStorage.getItem('tpo_jwt');
+    
+    fetch(`${API_BASE}/api/student/progress/summary/`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        updateProgressDisplay(data);
+        updateRecentActivities(data.recent_activities);
+        updateAchievements(data.achievements);
+        updateMilestones(data.next_milestones);
+    })
+    .catch(error => {
+        console.error('Error loading progress summary:', error);
+    });
+}
+
+// Update progress display
+function updateProgressDisplay(data) {
+    // Update overall progress
+    document.getElementById('overallProgress').textContent = `${data.total_progress}%`;
+    document.getElementById('overallProgressBar').style.width = `${data.total_progress}%`;
+    document.getElementById('overallProgressText').textContent = `${data.total_progress}% Complete`;
+    
+    // Update category progress
+    updateCategoryProgress('profile', data.profile_completion);
+    updateCategoryProgress('aptitude', data.aptitude_progress);
+    updateCategoryProgress('technical', data.technical_progress);
+    updateCategoryProgress('interview', data.interview_progress);
+    updateCategoryProgress('resume', data.resume_progress);
+    updateCategoryProgress('applications', data.applications_progress);
+    updateCategoryProgress('trainings', data.trainings_progress);
+    updateCategoryProgress('wellness', data.wellness_progress);
+}
+
+// Update category progress
+function updateCategoryProgress(category, progress) {
+    const progressBar = document.getElementById(`${category}ProgressBar`);
+    const progressText = document.getElementById(`${category}ProgressText`);
+    
+    if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+        progressBar.setAttribute('aria-valuenow', progress);
+    }
+    
+    if (progressText) {
+        progressText.textContent = `${progress}%`;
+    }
+}
+
+// Update recent activities
+function updateRecentActivities(activities) {
+    const container = document.getElementById('recentActivities');
+    
+    if (!activities || activities.length === 0) {
+        container.innerHTML = '<p class="text-muted text-center">No recent activities</p>';
+        return;
+    }
+    
+    const activitiesHtml = activities.map(activity => `
+        <div class="d-flex align-items-start mb-3">
+            <div class="flex-shrink-0">
+                <div class="badge bg-${getActivityColor(activity.activity_type)} rounded-circle p-2">
+                    <i class="fas ${getActivityIcon(activity.activity_type)}"></i>
+                </div>
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h6 class="mb-1">${activity.description}</h6>
+                <small class="text-muted">${formatDate(activity.created_at)}</small>
+                <div class="mt-1">
+                    <span class="badge bg-light text-dark">+${activity.points_earned} points</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+    
+    container.innerHTML = activitiesHtml;
+}
+
+// Update achievements
+function updateAchievements(achievements) {
+    const container = document.getElementById('achievementsList');
+    
+    if (!achievements || achievements.length === 0) {
+        container.innerHTML = '<p class="text-muted text-center">No achievements yet</p>';
+        return;
+    }
+    
+    const achievementsHtml = achievements.map(achievement => `
+        <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-trophy text-warning me-2"></i>
+            <span>${achievement}</span>
+        </div>
+    `).join('');
+    
+    container.innerHTML = achievementsHtml;
+}
+
+// Update milestones
+function updateMilestones(milestones) {
+    const container = document.getElementById('nextMilestones');
+    
+    if (!milestones || milestones.length === 0) {
+        container.innerHTML = '<p class="text-muted text-center">All milestones completed!</p>';
+        return;
+    }
+    
+    const milestonesHtml = milestones.map(milestone => `
+        <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-flag text-primary me-2"></i>
+            <small>${milestone}</small>
+        </div>
+    `).join('');
+    
+    container.innerHTML = milestonesHtml;
+}
+
+// Get activity color
+function getActivityColor(activityType) {
+    const colors = {
+        'profile_update': 'info',
+        'aptitude_test': 'success',
+        'technical_problem': 'warning',
+        'interview_practice': 'danger',
+        'resume_upload': 'primary',
+        'job_application': 'secondary',
+        'training_registered': 'dark',
+        'wellness_check': 'light'
+    };
+    return colors[activityType] || 'secondary';
+}
+
+// Get activity icon
+function getActivityIcon(activityType) {
+    const icons = {
+        'profile_update': 'fa-user',
+        'aptitude_test': 'fa-brain',
+        'technical_problem': 'fa-code',
+        'interview_practice': 'fa-comments',
+        'resume_upload': 'fa-file-alt',
+        'job_application': 'fa-briefcase',
+        'training_registered': 'fa-graduation-cap',
+        'wellness_check': 'fa-heartbeat'
+    };
+    return icons[activityType] || 'fa-check';
+}
+
+// Update progress for specific category
+function updateProgress(category, completedItem) {
+    const token = localStorage.getItem('tpo_jwt');
+    
+    fetch(`${API_BASE}/api/student/progress/update/`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            category: category,
+            completed_item: completedItem
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Refresh progress summary
+        loadProgressSummary();
+    })
+    .catch(error => {
+        console.error('Error updating progress:', error);
+    });
+}
+
+// Track progress for external links
+function trackProgress(category, activity) {
+    // Update progress in background
+    updateProgress(category, activity);
+    
+    // Show a subtle notification
+    showProgressNotification(category, activity);
+    
+    return true; // Allow the link to open normally
+}
+
+// Show progress notification
+function showProgressNotification(category, activity) {
+    const notification = document.createElement('div');
+    notification.className = 'position-fixed bottom-0 end-0 p-3';
+    notification.style.zIndex = '9999';
+    notification.innerHTML = `
+        <div class="toast show" role="alert">
+            <div class="toast-header">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                <strong class="me-auto">Progress Tracked!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                ${getCategoryName(category)} progress updated!
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+// Get category display name
+function getCategoryName(category) {
+    const names = {
+        'profile': 'Profile Completion',
+        'aptitude': 'Aptitude Preparation',
+        'technical': 'Technical Skills',
+        'interview': 'Interview Preparation',
+        'resume': 'Resume Building',
+        'applications': 'Job Applications',
+        'trainings': 'Training Programs',
+        'wellness': 'Wellness Activities'
+    };
+    return names[category] || category;
 }
 
 // Load jobs
@@ -585,6 +817,10 @@ function saveProfile(event) {
     .then(response => response.json())
     .then(data => {
         alert('Profile saved successfully!');
+        
+        // Track profile completion progress
+        updateProgress('profile', 'profile_updated');
+        
         loadDashboard();
     })
     .catch(error => {
@@ -612,6 +848,11 @@ function uploadResume(event) {
     .then(response => response.json())
     .then(data => {
         alert('Resume uploaded successfully!');
+        
+        // Track resume upload progress
+        updateProgress('resume', 'resume_uploaded');
+        
+        loadDashboard();
     })
     .catch(error => {
         console.error('Error uploading resume:', error);
@@ -690,6 +931,10 @@ function analyzeWellness(event) {
     .then(response => response.json())
     .then(data => {
         displayWellnessResult(data);
+        
+        // Track wellness check progress
+        updateProgress('wellness', 'wellness_check_completed');
+        
         loadWellnessScore(); // Refresh dashboard
     })
     .catch(error => {
@@ -884,6 +1129,9 @@ function submitApplication(jobId) {
         
         // Show success message
         alert('Application submitted successfully!');
+        
+        // Track job application progress
+        updateProgress('applications', 'job_application_submitted');
         
         // Refresh applications list
         loadApplications();
@@ -1257,6 +1505,10 @@ function registerForTraining(trainingId) {
     .then(response => response.json())
     .then(data => {
         alert('Registration successful!');
+        
+        // Track training registration progress
+        updateProgress('trainings', 'training_registered');
+        
         loadTrainings();
         loadMyTrainings(); // Refresh my trainings
     })
