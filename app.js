@@ -952,9 +952,6 @@ function displayWellnessResult(data) {
         <strong>Fatigue Level: ${level}</strong><br>
         ${advice}
     `;
-    
-    // Add to history
-    addToWellnessHistory(level, score);
 }
 
 // Load wellness score for dashboard
@@ -978,31 +975,6 @@ function loadWellnessScore() {
     .catch(error => {
         console.error('Error loading wellness score:', error);
     });
-}
-
-// Add to wellness history
-function addToWellnessHistory(level, score) {
-    const historyList = document.getElementById('historyList');
-    const timestamp = new Date().toLocaleString();
-    
-    const historyItem = `
-        <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
-            <div>
-                <span class="badge ${level === 'High' ? 'bg-danger' : level === 'Medium' ? 'bg-warning' : 'bg-success'}">${level}</span>
-                <small class="text-muted ms-2">${timestamp}</small>
-            </div>
-            <strong>${score}/10</strong>
-        </div>
-    `;
-    
-    // Add to top of history
-    historyList.insertAdjacentHTML('afterbegin', historyItem);
-    
-    // Keep only last 5 entries
-    const entries = historyList.children;
-    if (entries.length > 5) {
-        historyList.removeChild(entries[entries.length - 1]);
-    }
 }
 
 // Toggle sidebar for mobile
